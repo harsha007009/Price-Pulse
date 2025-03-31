@@ -2,29 +2,34 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { ActivitySquare, Home, Map, Menu, Search, Settings } from "lucide-react"
+import { usePathname, useRouter } from "next/navigation"
+import { ActivitySquare, Home, Map, Menu, Search, Settings, LogIn, UserPlus } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Input } from "@/components/ui/input"
 
 export function MobileNav() {
   const [open, setOpen] = React.useState(false)
+  const [searchQuery, setSearchQuery] = React.useState("")
   const pathname = usePathname()
+  const router = useRouter()
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (searchQuery.trim()) {
+      router.push(`/search?q=${encodeURIComponent(searchQuery.trim())}`)
+      setOpen(false)
+    }
+  }
 
   const routes = [
     {
       href: "/",
-      label: "Dashboard",
+      label: "Home",
       icon: Home,
       active: pathname === "/",
-    },
-    {
-      href: "/search",
-      label: "Search",
-      icon: Search,
-      active: pathname.startsWith("/search"),
     },
     {
       href: "/nearby",
@@ -53,33 +58,60 @@ export function MobileNav() {
       </SheetTrigger>
       <SheetContent side="left" className="pr-0">
         <div className="px-7">
-          <Link href="/" className="flex items-center gap-2" onClick={() => setOpen(false)}>
-            <ActivitySquare className="h-6 w-6" />
-            <span className="font-bold text-xl bg-gradient-to-r from-primary to-primary/60 bg-clip-text text-transparent">
-              Price Pulse
-            </span>
+          <Link
+            href="/"
+            className="flex items-center"
+            onClick={() => setOpen(false)}
+          >
+            <span className="font-bold text-xl">Price Pulse</span>
           </Link>
-        </div>
-        <div className="mt-8 px-7">
-          <div className="flex flex-col space-y-3">
-            {routes.map((route) => (
-              <Link
-                key={route.href}
-                href={route.href}
-                onClick={() => setOpen(false)}
-                className={cn(
-                  "flex items-center gap-2 text-lg font-medium transition-colors",
-                  route.active ? "text-foreground" : "text-foreground/60 hover:text-foreground",
-                )}
-              >
-                <route.icon className="h-5 w-5" />
-                {route.label}
-              </Link>
-            ))}
+          <div className="my-4">
+            <form onSubmit={handleSearch} className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                type="search"
+                placeholder="Search for products..."
+                className="w-full pl-10"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </form>
           </div>
+        </div>
+        <div className="flex flex-col gap-3 px-7">
+          {routes.map((route) => (
+            <Link
+              key={route.href}
+              href={route.href}
+              onClick={() => setOpen(false)}
+              className={cn(
+                "flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors",
+                route.active && "text-primary"
+              )}
+            >
+              <route.icon className="h-4 w-4" />
+              {route.label}
+            </Link>
+          ))}
+          <hr className="my-2" />
+          <Link
+            href="/signin"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+          >
+            <LogIn className="h-4 w-4" />
+            Sign In
+          </Link>
+          <Link
+            href="/signup"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
+          >
+            <UserPlus className="h-4 w-4" />
+            Sign Up
+          </Link>
         </div>
       </SheetContent>
     </Sheet>
   )
 }
-

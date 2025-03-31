@@ -1,19 +1,19 @@
-import { type NextRequest, NextResponse } from "next/server"
-import { getProduct } from "@/lib/product-fetcher"
+import { NextRequest, NextResponse } from "next/server"
+import dbConnect from "@/lib/db"
+import Product from "@/models/Product"
 
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {        
   try {
-    const productId = params.id
-    const product = await getProduct(productId)
-
+    await dbConnect();
+    const product = await Product.findOne({ id: params.id }).lean();
+    
     if (!product) {
-      return NextResponse.json({ error: "Product not found" }, { status: 404 })
+      return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
 
-    return NextResponse.json(product)
+    return NextResponse.json(product);
   } catch (error) {
-    console.error("Error fetching product:", error)
-    return NextResponse.json({ error: "Failed to fetch product data" }, { status: 500 })
+    console.error("Error fetching product:", error);
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
-

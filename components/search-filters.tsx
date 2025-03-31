@@ -9,14 +9,25 @@ import { Label } from "@/components/ui/label"
 import { Slider } from "@/components/ui/slider"
 import { Button } from "@/components/ui/button"
 
-export function SearchFilters() {
+interface SearchFiltersProps {
+  currentFilters: {
+    q?: string
+    platform?: string
+    minPrice?: string
+    maxPrice?: string
+    brand?: string
+    category?: string
+  }
+}
+
+export function SearchFilters({ currentFilters }: SearchFiltersProps) {
   const router = useRouter()
   const searchParams = useSearchParams()
 
-  const [platform, setPlatform] = useState(searchParams.get("platform") || "all")
+  const [platform, setPlatform] = useState(currentFilters.platform || "all")
   const [priceRange, setPriceRange] = useState([
-    Number.parseInt(searchParams.get("minPrice") || "0"),
-    Number.parseInt(searchParams.get("maxPrice") || "200000"),
+    Number.parseInt(currentFilters.minPrice || "0"),
+    Number.parseInt(currentFilters.maxPrice || "200000"),
   ])
 
   const applyFilters = () => {
@@ -99,15 +110,16 @@ export function SearchFilters() {
               defaultValue={priceRange}
               min={0}
               max={200000}
-              step={5000}
-              value={priceRange}
+              step={1000}
               onValueChange={setPriceRange}
               className="py-4"
             />
           </div>
 
-          <div className="flex flex-col gap-2">
-            <Button onClick={applyFilters}>Apply Filters</Button>
+          <div className="flex gap-2">
+            <Button onClick={applyFilters} className="flex-1">
+              Apply Filters
+            </Button>
             <Button variant="outline" onClick={resetFilters}>
               Reset
             </Button>

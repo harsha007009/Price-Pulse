@@ -1,0 +1,882 @@
+{
+  "products": [
+    {
+      "id": "iphone-15-pro-256gb",
+      "name": "Apple iPhone 15 Pro (256GB)",
+      "description": "The iPhone 15 Pro features a 6.1-inch Super Retina XDR display with ProMotion technology, A17 Pro chip, and a pro camera system with 48MP main camera.",
+      "brand": "Apple",
+      "category": "Smartphones",
+      "images": [
+        "https://m.media-amazon.com/images/I/81fxjeu8fdL._SL1500_.jpg",
+        "https://m.media-amazon.com/images/I/71dN4wNJj5L._SL1500_.jpg",
+        "https://m.media-amazon.com/images/I/81CgtwSII3L._SL1500_.jpg"
+      ],
+      "specifications": {
+        "Display": "6.1-inch Super Retina XDR display with ProMotion",
+        "Processor": "A17 Pro chip",
+        "Camera": "48MP main camera with 5x optical zoom",
+        "Battery": "Up to 29 hours of video playback",
+        "Storage": "256GB",
+        "OS": "iOS 17",
+        "Water Resistance": "IP68",
+        "Dimensions": "146.6 x 70.6 x 8.25 mm",
+        "Weight": "187 grams"
+      },
+      "prices": {
+        "amazon": {
+          "price": 131900,
+          "link": "https://www.amazon.in/Apple-iPhone-15-Pro-256GB/dp/B0CHX1K3RV/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "flipkart": {
+          "price": 129900,
+          "link": "https://www.flipkart.com/apple-iphone-15-pro-natural-titanium-256-gb/p/itm4a2c127a8473c",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T14:30:00Z"
+        },
+        "localStores": [
+          {
+            "name": "Reliance Digital",
+            "branch": "Daba Gardens",
+            "address": "Daba Gardens, Visakhapatnam",
+            "price": 134000,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T10:00:00Z"
+          },
+          {
+            "name": "Cell-Point",
+            "branch": "Daba Gardens",
+            "address": "Daba Gardens, Visakhapatnam",
+            "price": 132000,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T09:15:00Z"
+          }
+        ]
+      },
+      "reviews": {
+        "rating": 4.8,
+        "count": 1243
+      }
+    },
+    {
+      "id": "whirlpool-dishwasher-8th-sense",
+      "name": "Whirlpool 8th Sense Dishwasher",
+      "description": "Smart dishwasher with 8th Sense technology, 14 place settings, and multiple wash programs",
+      "brand": "Whirlpool",
+      "category": "Home Appliances",
+      "images": [
+        "https://m.media-amazon.com/images/I/71YF8ZQZQZL._SL1500_.jpg",
+        "https://m.media-amazon.com/images/I/71YF8ZQZQZL._SL1500_.jpg"
+      ],
+      "specifications": {
+        "Capacity": "14 place settings",
+        "Energy Rating": "5 Star",
+        "Water Consumption": "12L per cycle",
+        "Programs": "8 wash programs",
+        "Dimensions": "60 x 60 x 85 cm",
+        "Color": "Silver"
+      },
+      "prices": {
+        "amazon": {
+          "price": 45999,
+          "link": "https://www.amazon.in/Whirlpool-Dishwasher-8th-Sense-Technology/dp/B0C9JXXXXX/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "flipkart": {
+          "price": 44999,
+          "link": "https://www.flipkart.com/whirlpool-8th-sense-dishwasher/p/itmXXXXX",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T14:30:00Z"
+        },
+        "localStores": [
+          {
+            "name": "Reliance Digital",
+            "branch": "MVP Colony",
+            "address": "MVP Colony, Visakhapatnam",
+            "price": 46999,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T10:00:00Z"
+          },
+          {
+            "name": "Croma",
+            "branch": "MVP Colony",
+            "address": "MVP Colony, Visakhapatnam",
+            "price": 45999,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T09:15:00Z"
+          }
+        ]
+      },
+      "reviews": {
+        "rating": 4.5,
+        "count": 856
+      }
+    },
+    {
+      "id": "sony-wh1000xm5",
+      "name": "Sony WH-1000XM5 Wireless Headphones",
+      "description": "Premium noise-cancelling wireless headphones with 30-hour battery life and crystal clear sound",
+      "brand": "Sony",
+      "category": "Audio",
+      "images": [
+        "https://m.media-amazon.com/images/I/71QhZfXVPmL._SL1500_.jpg",
+        "https://m.media-amazon.com/images/I/71QhZfXVPmL._SL1500_.jpg"
+      ],
+      "specifications": {
+        "Battery Life": "30 hours",
+        "Noise Cancellation": "Active Noise Cancellation",
+        "Bluetooth": "5.2",
+        "Weight": "250g",
+        "Color": "Black"
+      },
+      "prices": {
+        "amazon": {
+          "price": 29999,
+          "link": "https://www.amazon.in/Sony-WH-1000XM5-Cancelling-Headphones-PlayStation/dp/B09Y2MYL5C/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "flipkart": {
+          "price": 28999,
+          "link": "https://www.flipkart.com/sony-wh-1000xm5-wireless-headphones/p/itmXXXXX",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T14:30:00Z"
+        },
+        "localStores": [
+          {
+            "name": "Reliance Digital",
+            "branch": "Rama Talkies",
+            "address": "Rama Talkies, Visakhapatnam",
+            "price": 30999,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T10:00:00Z"
+          },
+          {
+            "name": "Croma",
+            "branch": "Rama Talkies",
+            "address": "Rama Talkies, Visakhapatnam",
+            "price": 29999,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T09:15:00Z"
+          }
+        ]
+      },
+      "reviews": {
+        "rating": 4.7,
+        "count": 2345
+      }
+    },
+    {
+      "id": "lg-fridge-door-in-door",
+      "name": "LG 678L Door-in-Door Refrigerator",
+      "description": "Smart refrigerator with Door-in-Door technology, linear compressor, and smart diagnosis",
+      "brand": "LG",
+      "category": "Home Appliances",
+      "images": [
+        "https://m.media-amazon.com/images/I/71YF8ZQZQZL._SL1500_.jpg",
+        "https://m.media-amazon.com/images/I/71YF8ZQZQZL._SL1500_.jpg"
+      ],
+      "specifications": {
+        "Capacity": "678L",
+        "Energy Rating": "5 Star",
+        "Door Type": "Door-in-Door",
+        "Compressor": "Linear Inverter",
+        "Color": "Silver"
+      },
+      "prices": {
+        "amazon": {
+          "price": 89999,
+          "link": "https://www.amazon.in/LG-Door-Refrigerator-GL-D278RPZL/dp/B0C9JXXXXX/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "flipkart": {
+          "price": 88999,
+          "link": "https://www.flipkart.com/lg-door-refrigerator/p/itmXXXXX",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T14:30:00Z"
+        },
+        "localStores": [
+          {
+            "name": "Reliance Digital",
+            "branch": "MVP Colony",
+            "address": "MVP Colony, Visakhapatnam",
+            "price": 91999,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T10:00:00Z"
+          },
+          {
+            "name": "Croma",
+            "branch": "MVP Colony",
+            "address": "MVP Colony, Visakhapatnam",
+            "price": 89999,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T09:15:00Z"
+          }
+        ]
+      },
+      "reviews": {
+        "rating": 4.6,
+        "count": 1234
+      }
+    },
+    {
+      "id": "gaming-pc-rtx4080",
+      "name": "Custom Gaming PC with RTX 4080",
+      "description": "High-performance gaming PC with RTX 4080, 32GB RAM, and 2TB SSD",
+      "brand": "Custom Build",
+      "category": "Computers",
+      "images": [
+        "https://m.media-amazon.com/images/I/71YF8ZQZQZL._SL1500_.jpg",
+        "https://m.media-amazon.com/images/I/71YF8ZQZQZL._SL1500_.jpg"
+      ],
+      "specifications": {
+        "Processor": "Intel Core i9-13900K",
+        "Graphics": "NVIDIA RTX 4080 16GB",
+        "RAM": "32GB DDR5",
+        "Storage": "2TB NVMe SSD",
+        "Power Supply": "850W Gold",
+        "Case": "Lian Li O11 Dynamic"
+      },
+      "prices": {
+        "amazon": {
+          "price": 189999,
+          "link": "https://www.amazon.in/Custom-Gaming-PC-RTX-4080/dp/B0C9JXXXXX/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "flipkart": {
+          "price": 187999,
+          "link": "https://www.flipkart.com/custom-gaming-pc-rtx-4080/p/itmXXXXX",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T14:30:00Z"
+        },
+        "localStores": [
+          {
+            "name": "Reliance Digital",
+            "branch": "Rama Talkies",
+            "address": "Rama Talkies, Visakhapatnam",
+            "price": 191999,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T10:00:00Z"
+          },
+          {
+            "name": "Croma",
+            "branch": "Rama Talkies",
+            "address": "Rama Talkies, Visakhapatnam",
+            "price": 189999,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T09:15:00Z"
+          }
+        ]
+      },
+      "reviews": {
+        "rating": 4.9,
+        "count": 567
+      }
+    },
+    {
+      "id": "samsung-65-qled-tv",
+      "name": "Samsung 65-inch QLED 4K Smart TV",
+      "description": "65-inch QLED 4K UHD Smart TV with Quantum HDR, Motion Xcelerator Turbo+, and Object Tracking Sound",
+      "brand": "Samsung",
+      "category": "TVs",
+      "images": [
+        "https://example.com/samsung-tv-1.jpg",
+        "https://example.com/samsung-tv-2.jpg"
+      ],
+      "specifications": {
+        "Screen Size": "65 inches",
+        "Resolution": "4K UHD",
+        "HDR": "Quantum HDR",
+        "Sound": "Object Tracking Sound",
+        "Smart Features": "Built-in Alexa, Google Assistant",
+        "Connectivity": "HDMI x4, USB x2, WiFi, Bluetooth"
+      },
+      "prices": {
+        "amazon": {
+          "price": 129999,
+          "link": "https://www.amazon.in/Samsung-65-QLED-TV/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "flipkart": {
+          "price": 127999,
+          "link": "https://www.flipkart.com/samsung-65-qled-tv/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "localStores": [
+          {
+            "name": "Bajaj Electronics",
+            "branch": "Gajuwaka",
+            "address": "Gajuwaka, Visakhapatnam",
+            "price": 125999,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T12:00:00Z"
+          },
+          {
+            "name": "Reliance Digital",
+            "branch": "Waltair Uplands",
+            "address": "Waltair Uplands, Visakhapatnam",
+            "price": 126999,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T12:00:00Z"
+          }
+        ]
+      },
+      "reviews": {
+        "rating": 4.7,
+        "count": 856
+      }
+    },
+    {
+      "id": "bosch-washing-machine",
+      "name": "Bosch 8 KG Front Load Washing Machine",
+      "description": "8 KG Front Loading Washing Machine with 1400 RPM, 15 Wash Programs, and Anti-Tangle feature",
+      "brand": "Bosch",
+      "category": "Home Appliances",
+      "images": [
+        "https://example.com/bosch-washer-1.jpg",
+        "https://example.com/bosch-washer-2.jpg"
+      ],
+      "specifications": {
+        "Capacity": "8 KG",
+        "Spin Speed": "1400 RPM",
+        "Programs": "15 Wash Programs",
+        "Energy Rating": "5 Star",
+        "Features": "Anti-Tangle, Quick Wash, Anti-Bacterial"
+      },
+      "prices": {
+        "amazon": {
+          "price": 47990,
+          "link": "https://www.amazon.in/bosch-8kg-washing-machine/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "flipkart": {
+          "price": 46990,
+          "link": "https://www.flipkart.com/bosch-8kg-washing-machine/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "localStores": [
+          {
+            "name": "Sathya Electronics",
+            "branch": "Siripuram",
+            "address": "Siripuram Junction, Visakhapatnam",
+            "price": 45990,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T12:00:00Z"
+          },
+          {
+            "name": "Electronics Paradise",
+            "branch": "Dwaraka Nagar",
+            "address": "Dwaraka Nagar, Visakhapatnam",
+            "price": 46500,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T12:00:00Z"
+          }
+        ]
+      },
+      "reviews": {
+        "rating": 4.6,
+        "count": 423
+      }
+    },
+    {
+      "id": "macbook-pro-16",
+      "name": "Apple MacBook Pro 16-inch M3 Pro",
+      "description": "16-inch MacBook Pro with M3 Pro chip, 16GB RAM, 512GB SSD, and Liquid Retina XDR display",
+      "brand": "Apple",
+      "category": "Laptops",
+      "images": [
+        "https://example.com/macbook-pro-1.jpg",
+        "https://example.com/macbook-pro-2.jpg"
+      ],
+      "specifications": {
+        "Processor": "Apple M3 Pro",
+        "RAM": "16GB Unified Memory",
+        "Storage": "512GB SSD",
+        "Display": "16-inch Liquid Retina XDR",
+        "Battery": "Up to 22 hours"
+      },
+      "prices": {
+        "amazon": {
+          "price": 249900,
+          "link": "https://www.amazon.in/macbook-pro-16/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "flipkart": {
+          "price": 248900,
+          "link": "https://www.flipkart.com/macbook-pro-16/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "localStores": [
+          {
+            "name": "Imagine Store",
+            "branch": "CMR Central",
+            "address": "CMR Central Mall, Visakhapatnam",
+            "price": 249999,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T12:00:00Z"
+          },
+          {
+            "name": "Apple Premium Reseller",
+            "branch": "Daba Gardens",
+            "address": "Daba Gardens, Visakhapatnam",
+            "price": 248999,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T12:00:00Z"
+          }
+        ]
+      },
+      "reviews": {
+        "rating": 4.9,
+        "count": 328
+      }
+    },
+    {
+      "id": "dell-gaming-monitor",
+      "name": "Dell 27-inch QHD Gaming Monitor",
+      "description": "27-inch QHD Gaming Monitor with 165Hz refresh rate, 1ms response time, and G-Sync compatibility",
+      "brand": "Dell",
+      "category": "Monitors",
+      "images": [
+        "https://example.com/dell-monitor-1.jpg",
+        "https://example.com/dell-monitor-2.jpg"
+      ],
+      "specifications": {
+        "Screen Size": "27 inches",
+        "Resolution": "2560 x 1440",
+        "Refresh Rate": "165Hz",
+        "Response Time": "1ms",
+        "Panel Type": "IPS",
+        "Features": "G-Sync Compatible, HDR"
+      },
+      "prices": {
+        "amazon": {
+          "price": 32999,
+          "link": "https://www.amazon.in/dell-27-gaming-monitor/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "flipkart": {
+          "price": 31999,
+          "link": "https://www.flipkart.com/dell-27-gaming-monitor/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "localStores": [
+          {
+            "name": "Computer World",
+            "branch": "Asilmetta",
+            "address": "Asilmetta Junction, Visakhapatnam",
+            "price": 32499,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T12:00:00Z"
+          },
+          {
+            "name": "Digital Zone",
+            "branch": "Jagadamba Centre",
+            "address": "Jagadamba Junction, Visakhapatnam",
+            "price": 31999,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T12:00:00Z"
+          }
+        ]
+      },
+      "reviews": {
+        "rating": 4.7,
+        "count": 245
+      }
+    },
+    {
+      "id": "sony-home-theatre",
+      "name": "Sony HT-A7000 Soundbar",
+      "description": "7.1.2ch Dolby Atmos Soundbar with built-in subwoofers and wireless rear speakers",
+      "brand": "Sony",
+      "category": "Audio",
+      "images": [
+        "https://example.com/sony-soundbar-1.jpg",
+        "https://example.com/sony-soundbar-2.jpg"
+      ],
+      "specifications": {
+        "Channels": "7.1.2",
+        "Power Output": "500W",
+        "Features": "Dolby Atmos, DTS:X, HDMI eARC",
+        "Connectivity": "Bluetooth, WiFi, HDMI",
+        "Voice Control": "Google Assistant, Alexa"
+      },
+      "prices": {
+        "amazon": {
+          "price": 89990,
+          "link": "https://www.amazon.in/sony-ht-a7000-soundbar/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "flipkart": {
+          "price": 88990,
+          "link": "https://www.flipkart.com/sony-ht-a7000-soundbar/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "localStores": [
+          {
+            "name": "Sony Center",
+            "branch": "Waltair Main Road",
+            "address": "Waltair Main Road, Visakhapatnam",
+            "price": 87990,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T12:00:00Z"
+          },
+          {
+            "name": "Music World",
+            "branch": "MVP Colony",
+            "address": "MVP Colony, Visakhapatnam",
+            "price": 88990,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T12:00:00Z"
+          }
+        ]
+      },
+      "reviews": {
+        "rating": 4.8,
+        "count": 156
+      }
+    },
+    {
+      "id": "samsung-galaxy-s24-ultra",
+      "name": "Samsung Galaxy S24 Ultra 5G",
+      "description": "Latest Samsung flagship with 200MP camera, Snapdragon 8 Gen 3, and S Pen support",
+      "brand": "Samsung",
+      "category": "Smartphones",
+      "images": [
+        "https://example.com/samsung-s24-ultra-1.jpg",
+        "https://example.com/samsung-s24-ultra-2.jpg"
+      ],
+      "specifications": {
+        "Display": "6.8-inch QHD+ Dynamic AMOLED 2X",
+        "Processor": "Snapdragon 8 Gen 3",
+        "RAM": "12GB",
+        "Storage": "512GB",
+        "Camera": "200MP main + 50MP + 12MP + 10MP",
+        "Battery": "5000mAh",
+        "OS": "Android 14, One UI 6.1"
+      },
+      "prices": {
+        "amazon": {
+          "price": 134999,
+          "link": "https://www.amazon.in/samsung-galaxy-s24-ultra/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "flipkart": {
+          "price": 133999,
+          "link": "https://www.flipkart.com/samsung-galaxy-s24-ultra/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "localStores": [
+          {
+            "name": "Samsung Smart Cafe",
+            "branch": "Dwaraka Nagar",
+            "address": "Dwaraka Nagar, Visakhapatnam",
+            "price": 132999,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T12:00:00Z"
+          },
+          {
+            "name": "Mobile Gallery",
+            "branch": "CMR Central",
+            "address": "CMR Central Mall, Visakhapatnam",
+            "price": 133499,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T12:00:00Z"
+          }
+        ]
+      },
+      "reviews": {
+        "rating": 4.9,
+        "count": 342
+      }
+    },
+    {
+      "id": "iphone-15-pro-max-1tb",
+      "name": "Apple iPhone 15 Pro Max (1TB)",
+      "description": "The ultimate iPhone with 1TB storage, A17 Pro chip, and advanced camera system",
+      "brand": "Apple",
+      "category": "Smartphones",
+      "images": [
+        "https://example.com/iphone-15-pro-max-1.jpg",
+        "https://example.com/iphone-15-pro-max-2.jpg"
+      ],
+      "specifications": {
+        "Display": "6.7-inch Super Retina XDR OLED",
+        "Processor": "A17 Pro chip",
+        "Storage": "1TB",
+        "Camera": "48MP main + 12MP + 12MP",
+        "Battery": "4422mAh",
+        "OS": "iOS 17",
+        "Features": "Dynamic Island, ProMotion"
+      },
+      "prices": {
+        "amazon": {
+          "price": 184900,
+          "link": "https://www.amazon.in/iphone-15-pro-max/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "flipkart": {
+          "price": 183900,
+          "link": "https://www.flipkart.com/iphone-15-pro-max/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "localStores": [
+          {
+            "name": "Imagine Store",
+            "branch": "Waltair Uplands",
+            "address": "Waltair Uplands, Visakhapatnam",
+            "price": 182900,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T12:00:00Z"
+          },
+          {
+            "name": "iStore",
+            "branch": "Siripuram",
+            "address": "Siripuram Junction, Visakhapatnam",
+            "price": 183500,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T12:00:00Z"
+          }
+        ]
+      },
+      "reviews": {
+        "rating": 4.9,
+        "count": 523
+      }
+    },
+    {
+      "id": "samsung-galaxy-tab-s9-ultra",
+      "name": "Samsung Galaxy Tab S9 Ultra",
+      "description": "14.6-inch premium Android tablet with S Pen and DeX support",
+      "brand": "Samsung",
+      "category": "Tablets",
+      "images": [
+        "https://example.com/tab-s9-ultra-1.jpg",
+        "https://example.com/tab-s9-ultra-2.jpg"
+      ],
+      "specifications": {
+        "Display": "14.6-inch Super AMOLED",
+        "Processor": "Snapdragon 8 Gen 2",
+        "RAM": "12GB",
+        "Storage": "256GB",
+        "Battery": "11200mAh",
+        "Features": "S Pen included, DeX mode"
+      },
+      "prices": {
+        "amazon": {
+          "price": 124999,
+          "link": "https://www.amazon.in/samsung-galaxy-tab-s9-ultra/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "flipkart": {
+          "price": 123999,
+          "link": "https://www.flipkart.com/samsung-galaxy-tab-s9-ultra/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "localStores": [
+          {
+            "name": "Samsung Plaza",
+            "branch": "Jagadamba Centre",
+            "address": "Jagadamba Junction, Visakhapatnam",
+            "price": 122999,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T12:00:00Z"
+          },
+          {
+            "name": "Gadget Hub",
+            "branch": "MVP Colony",
+            "address": "MVP Colony, Visakhapatnam",
+            "price": 123499,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T12:00:00Z"
+          }
+        ]
+      },
+      "reviews": {
+        "rating": 4.8,
+        "count": 234
+      }
+    },
+    {
+      "id": "ipad-pro-12-9-m2",
+      "name": "Apple iPad Pro 12.9-inch M2",
+      "description": "12.9-inch iPad Pro with M2 chip, mini-LED display, and Apple Pencil 2 support",
+      "brand": "Apple",
+      "category": "Tablets",
+      "images": [
+        "https://example.com/ipad-pro-1.jpg",
+        "https://example.com/ipad-pro-2.jpg"
+      ],
+      "specifications": {
+        "Display": "12.9-inch Liquid Retina XDR",
+        "Processor": "Apple M2 chip",
+        "Storage": "512GB",
+        "Features": "ProMotion, True Tone",
+        "Connectivity": "5G, WiFi 6E"
+      },
+      "prices": {
+        "amazon": {
+          "price": 142900,
+          "link": "https://www.amazon.in/ipad-pro-12-9/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "flipkart": {
+          "price": 141900,
+          "link": "https://www.flipkart.com/ipad-pro-12-9/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "localStores": [
+          {
+            "name": "Imagine Store",
+            "branch": "CMR Central",
+            "address": "CMR Central Mall, Visakhapatnam",
+            "price": 141500,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T12:00:00Z"
+          },
+          {
+            "name": "Apple Premium Reseller",
+            "branch": "Daba Gardens",
+            "address": "Daba Gardens, Visakhapatnam",
+            "price": 141999,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T12:00:00Z"
+          }
+        ]
+      },
+      "reviews": {
+        "rating": 4.9,
+        "count": 289
+      }
+    },
+    {
+      "id": "samsung-galaxy-watch-6-pro",
+      "name": "Samsung Galaxy Watch 6 Pro",
+      "description": "Premium smartwatch with advanced health tracking and rotating bezel",
+      "brand": "Samsung",
+      "category": "Wearables",
+      "images": [
+        "https://example.com/galaxy-watch-6-pro-1.jpg",
+        "https://example.com/galaxy-watch-6-pro-2.jpg"
+      ],
+      "specifications": {
+        "Display": "1.4-inch Super AMOLED",
+        "Battery": "590mAh",
+        "Features": "ECG, Blood Pressure, Sleep tracking",
+        "OS": "Wear OS 4",
+        "Storage": "16GB"
+      },
+      "prices": {
+        "amazon": {
+          "price": 44999,
+          "link": "https://www.amazon.in/samsung-galaxy-watch-6-pro/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "flipkart": {
+          "price": 43999,
+          "link": "https://www.flipkart.com/samsung-galaxy-watch-6-pro/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "localStores": [
+          {
+            "name": "Samsung Smart Cafe",
+            "branch": "Dwaraka Nagar",
+            "address": "Dwaraka Nagar, Visakhapatnam",
+            "price": 43499,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T12:00:00Z"
+          },
+          {
+            "name": "Watch World",
+            "branch": "Siripuram",
+            "address": "Siripuram Junction, Visakhapatnam",
+            "price": 43999,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T12:00:00Z"
+          }
+        ]
+      },
+      "reviews": {
+        "rating": 4.7,
+        "count": 178
+      }
+    },
+    {
+      "id": "apple-watch-ultra-2",
+      "name": "Apple Watch Ultra 2",
+      "description": "Premium rugged smartwatch with advanced features for outdoor activities",
+      "brand": "Apple",
+      "category": "Wearables",
+      "images": [
+        "https://example.com/watch-ultra-2-1.jpg",
+        "https://example.com/watch-ultra-2-2.jpg"
+      ],
+      "specifications": {
+        "Display": "2.1-inch Always-On Retina",
+        "Battery": "Up to 36 hours",
+        "Features": "ECG, Blood Oxygen, Compass",
+        "Water Resistance": "100m",
+        "Storage": "32GB"
+      },
+      "prices": {
+        "amazon": {
+          "price": 89900,
+          "link": "https://www.amazon.in/apple-watch-ultra-2/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "flipkart": {
+          "price": 88900,
+          "link": "https://www.flipkart.com/apple-watch-ultra-2/",
+          "inStock": true,
+          "lastUpdated": "2024-03-31T12:00:00Z"
+        },
+        "localStores": [
+          {
+            "name": "Imagine Store",
+            "branch": "Waltair Uplands",
+            "address": "Waltair Uplands, Visakhapatnam",
+            "price": 88500,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T12:00:00Z"
+          },
+          {
+            "name": "iStore",
+            "branch": "CMR Central",
+            "address": "CMR Central Mall, Visakhapatnam",
+            "price": 88999,
+            "inStock": true,
+            "lastUpdated": "2024-03-31T12:00:00Z"
+          }
+        ]
+      },
+      "reviews": {
+        "rating": 4.8,
+        "count": 156
+      }
+    }
+  ]
+} 

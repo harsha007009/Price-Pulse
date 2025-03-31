@@ -3,29 +3,43 @@ import { MapView } from "@/components/map-view"
 import { NearbyStoresList } from "@/components/nearby-stores-list"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-export default function NearbyPage({ searchParams }: { searchParams: { storeId?: string } }) {
-  const selectedStoreId = searchParams.storeId ? Number.parseInt(searchParams.storeId) : undefined
+interface NearbyPageProps {
+  searchParams: {
+    storeId?: string
+  }
+}
+
+export default async function NearbyPage({ searchParams }: NearbyPageProps) {
+  const storeId = await Promise.resolve(searchParams.storeId)
+  const selectedStoreId = storeId ? parseInt(storeId) : undefined
 
   return (
     <main className="container mx-auto px-4 py-6">
-      <h1 className="text-3xl font-bold mb-6">Nearby Stores</h1>
-
-      <Tabs defaultValue="list" className="mt-4">
-        <TabsList className="grid w-full max-w-md grid-cols-2">
-          <TabsTrigger value="list">List View</TabsTrigger>
-          <TabsTrigger value="map">Map View</TabsTrigger>
-        </TabsList>
-        <TabsContent value="list" className="mt-4">
-          <Suspense fallback={<div className="h-96 w-full bg-muted rounded-lg animate-pulse" />}>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="space-y-6">
+          <h1 className="text-2xl font-bold">Nearby Stores</h1>
+          <Suspense
+            fallback={
+              <div className="space-y-4">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="h-32 bg-muted/30 rounded-lg animate-pulse" />
+                ))}
+              </div>
+            }
+          >
             <NearbyStoresList selectedStoreId={selectedStoreId} />
           </Suspense>
-        </TabsContent>
-        <TabsContent value="map" className="mt-4">
-          <Suspense fallback={<div className="h-96 w-full bg-muted rounded-lg animate-pulse" />}>
+        </div>
+        <div>
+          <Suspense
+            fallback={
+              <div className="h-[600px] bg-muted/30 rounded-lg animate-pulse" />
+            }
+          >
             <MapView selectedStoreId={selectedStoreId} />
           </Suspense>
-        </TabsContent>
-      </Tabs>
+        </div>
+      </div>
     </main>
   )
 }
