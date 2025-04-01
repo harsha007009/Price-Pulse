@@ -5,13 +5,18 @@ import Product from '@/models/Product';
 
 export async function GET() {
   try {
+    console.log('Connecting to MongoDB...');
     await dbConnect();
+    console.log('Connected to MongoDB, fetching products...');
+    
     const products = await Product.find({}).lean();
-    return NextResponse.json({ products });
+    console.log(`Found ${products.length} products`);
+    
+    return NextResponse.json(products);
   } catch (error) {
     console.error('Error in GET /api/products:', error);
     return NextResponse.json(
-      { error: 'Internal Server Error' },
+      { error: 'Internal Server Error', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }
@@ -37,11 +42,11 @@ export async function POST(request: Request) {
     }
     
     const product = await Product.create(data);
-    return NextResponse.json({ product }, { status: 201 });
+    return NextResponse.json(product, { status: 201 });
   } catch (error) {
     console.error('Error in POST /api/products:', error);
     return NextResponse.json(
-      { error: 'Internal Server Error' },
+      { error: 'Internal Server Error', details: error instanceof Error ? error.message : 'Unknown error' },
       { status: 500 }
     );
   }

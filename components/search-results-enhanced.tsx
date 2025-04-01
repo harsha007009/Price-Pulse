@@ -175,9 +175,9 @@ export function SearchResultsEnhanced({ query, searchParams }: SearchResultsEnha
               <div className="flex items-center gap-2 mt-2">
                 <div className="flex items-center">
                   <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                  <span className="ml-1 text-sm font-medium">{result.reviews.rating}</span>
+                  <span className="ml-1 text-sm font-medium">{result.reviews?.rating || 0}</span>
                 </div>
-                <span className="text-sm text-muted-foreground">({result.reviews.count} reviews)</span>
+                <span className="text-sm text-muted-foreground">({result.reviews?.count || 0} reviews)</span>
                 <Badge variant="outline" className="text-sm">
                   {result.brand}
                 </Badge>
