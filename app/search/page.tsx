@@ -16,12 +16,12 @@ interface SearchPageProps {
 
 export default async function SearchPage({ searchParams }: SearchPageProps) {
   const resolvedParams = {
-    q: await Promise.resolve(searchParams.q || ""),
-    platform: await Promise.resolve(searchParams.platform),
-    minPrice: await Promise.resolve(searchParams.minPrice),
-    maxPrice: await Promise.resolve(searchParams.maxPrice),
-    brand: await Promise.resolve(searchParams.brand),
-    category: await Promise.resolve(searchParams.category)
+    q: searchParams.q || "",
+    platform: searchParams.platform,
+    minPrice: searchParams.minPrice,
+    maxPrice: searchParams.maxPrice,
+    brand: searchParams.brand,
+    category: searchParams.category
   }
 
   return (
