@@ -32,12 +32,6 @@ export function MobileNav() {
       icon: Map,
       active: pathname.startsWith("/nearby"),
     },
-    {
-      href: "/settings",
-      label: "Settings",
-      icon: Settings,
-      active: pathname.startsWith("/settings"),
-    },
   ]
 
   return (
