@@ -9,8 +9,8 @@ import type { Product } from "@/lib/product-fetcher"
 import { ProductImage } from "@/components/product-image"
 
 interface SearchResultsEnhancedProps {
-  query: string
   searchParams: {
+    q?: string
     platform?: string
     minPrice?: string
     maxPrice?: string
@@ -19,10 +19,13 @@ interface SearchResultsEnhancedProps {
   }
 }
 
-export function SearchResultsEnhanced({ query, searchParams }: SearchResultsEnhancedProps) {
+export function SearchResultsEnhanced({ searchParams }: SearchResultsEnhancedProps) {
   const [results, setResults] = useState<Product[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  
+  // Get query from searchParams
+  const query = searchParams.q || ""
 
   useEffect(() => {
     const fetchResults = async () => {
@@ -31,48 +34,51 @@ export function SearchResultsEnhanced({ query, searchParams }: SearchResultsEnha
         setError(null)
 
         // Build query string
-        const queryParams = new URLSearchParams({
-          q: query,
+        const queryParams = new URLSearchParams()
+        
+        // Add all search parameters to query
+        if (query) {
+          queryParams.append("q", query)
+        }
+        
+        // Add other search parameters if they exist
+        Object.entries(searchParams).forEach(([key, value]) => {
+          if (value && key !== 'q') {
+            queryParams.append(key, value)
+          }
         })
 
-        if (searchParams.platform) {
-          queryParams.append("platform", searchParams.platform)
-        }
-
-        if (searchParams.minPrice) {
-          queryParams.append("minPrice", searchParams.minPrice)
-        }
-
-        if (searchParams.maxPrice) {
-          queryParams.append("maxPrice", searchParams.maxPrice)
-        }
-
-        if (searchParams.brand) {
-          queryParams.append("brand", searchParams.brand)
-        }
-
-        if (searchParams.category) {
-          queryParams.append("category", searchParams.category)
-        }
-
-        const response = await fetch(`/api/products/search?${queryParams.toString()}`)
+        console.log("Fetching search results with params:", queryParams.toString());
+        const response = await fetch(`/api/products/search?${queryParams.toString()}`, {
+          // Add cache: 'no-store' to prevent caching errors
+          cache: 'no-store'
+        })
 
         if (!response.ok) {
-          throw new Error(`Failed to fetch search results: ${response.statusText}`)
+          const errorData = await response.json().catch(() => null);
+          const errorMessage = errorData?.error || response.statusText || 'Unknown error';
+          throw new Error(`Failed to fetch search results: ${errorMessage}`)
         }
 
         const data = await response.json()
+        
+        // Validate that the response is an array
+        if (!Array.isArray(data)) {
+          console.error("Search API returned non-array data:", data);
+          throw new Error("Invalid response format from search API");
+        }
+        
         setResults(data)
-      } catch (err) {
+      } catch (err: any) {
         console.error("Error fetching search results:", err)
-        setError("Failed to load search results. Please try again.")
+        setError(err?.message || "Failed to load search results. Please try again.")
       } finally {
         setLoading(false)
       }
     }
 
     fetchResults()
-  }, [query, searchParams])
+  }, [searchParams])
 
   // Format price in Indian Rupees
   const formatPrice = (price: number) => {
@@ -132,34 +138,23 @@ export function SearchResultsEnhanced({ query, searchParams }: SearchResultsEnha
   return (
     <div className="space-y-4">
       {results.map((result) => {
-        // Find the lowest price
-        const prices = [
-          result.prices.amazon?.price,
-          result.prices.flipkart?.price,
-          ...(result.prices.localStores?.map((store) => store.price) || []),
-        ].filter(Boolean) as number[]
-
-        const lowestPrice = Math.min(...prices)
-
-        // Find which platform has the lowest price
-        let lowestPlatform = ""
-
-        if (result.prices.amazon?.price === lowestPrice) {
-          lowestPlatform = "Amazon"
-        } else if (result.prices.flipkart?.price === lowestPrice) {
-          lowestPlatform = "Flipkart"
-        } else {
-          const lowestStore = result.prices.localStores?.find((store) => store.price === lowestPrice)
-          if (lowestStore) {
-            lowestPlatform = `${lowestStore.name} (${lowestStore.branch})`
-          }
+        // With normalized structure, we'll use the currentPrice and stores array
+        const currentPrice = result.currentPrice || 0;
+        const originalPrice = result.originalPrice;
+        
+        // Find the lowest store price
+        let lowestStore = null;
+        if (result.stores && result.stores.length > 0) {
+          lowestStore = result.stores.reduce<typeof result.stores[0] | null>((lowest, store) => {
+            return (!lowest || store.price < lowest.price) ? store : lowest;
+          }, null);
         }
 
         return (
-          <div key={result.id} className="flex flex-col md:flex-row gap-4 p-4 border rounded-lg">
+          <div key={result.id || result._id?.toString()} className="flex flex-col md:flex-row gap-4 p-4 border rounded-lg">
             <div className="flex justify-center md:block">
               <ProductImage
-                src={result.images[0] || "/placeholder.svg"}
+                src={(result.images && result.images.length > 0) ? result.images[0] : "/placeholder.svg"}
                 alt={result.name}
                 width={100}
                 height={100}
@@ -168,64 +163,75 @@ export function SearchResultsEnhanced({ query, searchParams }: SearchResultsEnha
               />
             </div>
             <div className="flex-1">
-              <Link href={`/product/${result.id}`} className="hover:underline">
+              <Link href={`/product/${result.id || result._id}`} className="hover:underline">
                 <h2 className="text-lg font-semibold">{result.name}</h2>
               </Link>
               <p className="text-sm text-muted-foreground mt-1">{result.description.substring(0, 120)}...</p>
-              <div className="flex items-center gap-2 mt-2">
-                <div className="flex items-center">
-                  <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
-                  <span className="ml-1 text-sm font-medium">{result.reviews.rating}</span>
+              
+              {result.reviews && (
+                <div className="flex items-center gap-2 mt-2">
+                  <div className="flex items-center">
+                    <Star className="h-4 w-4 fill-yellow-400 text-yellow-400" />
+                    <span className="ml-1 text-sm font-medium">{result.reviews.rating}</span>
+                  </div>
+                  <span className="text-sm text-muted-foreground">({result.reviews.count} reviews)</span>
                 </div>
-                <span className="text-sm text-muted-foreground">({result.reviews.count} reviews)</span>
-                <Badge variant="outline" className="text-sm">
+              )}
+              
+              {result.brand && (
+                <Badge variant="outline" className="text-sm mt-2">
                   {result.brand}
                 </Badge>
-              </div>
-              <div className="flex flex-wrap gap-2 mt-3">
-                {result.prices.amazon && (
-                  <div className="flex items-center gap-1 text-sm">
-                    <Badge variant="outline">Amazon</Badge>
-                    <span className="font-medium">{formatPrice(result.prices.amazon.price)}</span>
-                    {lowestPlatform === "Amazon" && (
-                      <Badge variant="secondary" className="text-xs">
-                        Best Price
-                      </Badge>
-                    )}
-                  </div>
-                )}
-                {result.prices.flipkart && (
-                  <div className="flex items-center gap-1 text-sm">
-                    <Badge variant="outline">Flipkart</Badge>
-                    <span className="font-medium">{formatPrice(result.prices.flipkart.price)}</span>
-                    {lowestPlatform === "Flipkart" && (
-                      <Badge variant="secondary" className="text-xs">
-                        Best Price
-                      </Badge>
-                    )}
-                  </div>
-                )}
-              </div>
+              )}
+              
+              {result.stores && result.stores.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {result.stores.slice(0, 2).map((store, index) => (
+                    <div key={index} className="flex items-center gap-1 text-sm">
+                      <Badge variant="outline">{store.name}</Badge>
+                      <span className="font-medium">{formatPrice(store.price)}</span>
+                      {lowestStore && store.name === lowestStore.name && (
+                        <Badge variant="secondary" className="text-xs">
+                          Best Price
+                        </Badge>
+                      )}
+                    </div>
+                  ))}
+                  
+                  {result.stores.length > 2 && (
+                    <span className="text-xs text-muted-foreground self-center">
+                      +{result.stores.length - 2} more
+                    </span>
+                  )}
+                </div>
+              )}
             </div>
             <div className="flex flex-col gap-2 justify-center items-center md:items-end">
               <div className="text-center md:text-right">
-                <p className="text-lg font-bold">{formatPrice(lowestPrice)}</p>
+                <p className="text-lg font-bold">{formatPrice(currentPrice)}</p>
+                {originalPrice && originalPrice > currentPrice && (
+                  <p className="text-xs text-muted-foreground line-through">
+                    {formatPrice(originalPrice)}
+                  </p>
+                )}
                 <p className="text-xs text-muted-foreground">Lowest price</p>
               </div>
               <div className="flex gap-2">
                 <Button size="sm" asChild>
-                  <Link href={`/product/${result.id}`}>View Details</Link>
+                  <Link href={`/product/${result.id || result._id}`}>View Details</Link>
                 </Button>
-                <Button size="sm" variant="outline" asChild>
-                  <a
-                    href={result.prices.amazon?.link || result.prices.flipkart?.link || "#"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <ExternalLink className="h-4 w-4 mr-1" />
-                    Buy Now
-                  </a>
-                </Button>
+                {lowestStore && lowestStore.type === 'online' && (
+                  <Button size="sm" variant="outline" asChild>
+                    <a
+                      href={`https://www.${lowestStore.name.toLowerCase()}.com/s?k=${encodeURIComponent(result.name)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      <ExternalLink className="h-4 w-4 mr-1" />
+                      Buy Now
+                    </a>
+                  </Button>
+                )}
               </div>
             </div>
           </div>

@@ -61,8 +61,6 @@ export function ProductDetailsEnhanced({ productId }: ProductDetailsEnhancedProp
         },
         body: JSON.stringify({
           productId,
-          amazonUrl: product?.prices.amazon?.link,
-          flipkartUrl: product?.prices.flipkart?.link,
         }),
       })
 
@@ -103,37 +101,30 @@ export function ProductDetailsEnhanced({ productId }: ProductDetailsEnhancedProp
 
   // Find the lowest price
   const findLowestPrice = () => {
-    if (!product) return null
+    if (!product || !product.stores || product.stores.length === 0) return null
 
-    const prices = [
-      product.prices.amazon?.price,
-      product.prices.flipkart?.price,
-      ...(product.prices.localStores?.map((store) => store.price) || []),
-    ].filter(Boolean) as number[]
+    const prices = product.stores.map(store => store.price).filter(Boolean) as number[]
 
     if (prices.length === 0) return null
 
     const lowestPrice = Math.min(...prices)
 
-    // Find which platform has the lowest price
-    let lowestPlatform = ""
-    let lowestPlatformLink = ""
-
-    if (product.prices.amazon?.price === lowestPrice) {
-      lowestPlatform = "Amazon"
-      lowestPlatformLink = product.prices.amazon.link
-    } else if (product.prices.flipkart?.price === lowestPrice) {
-      lowestPlatform = "Flipkart"
-      lowestPlatformLink = product.prices.flipkart.link
-    } else {
-      const lowestStore = product.prices.localStores?.find((store) => store.price === lowestPrice)
-      if (lowestStore) {
-        lowestPlatform = `${lowestStore.name} (${lowestStore.branch})`
-        lowestPlatformLink = "#"
-      }
+    // Find which store has the lowest price
+    const lowestStore = product.stores.find(store => store.price === lowestPrice)
+    
+    if (!lowestStore) return null
+    
+    // Determine link based on store type (online vs local)
+    const isOnlineStore = lowestStore.type.toLowerCase() === 'online'
+    const link = isOnlineStore 
+      ? `https://www.${lowestStore.name.toLowerCase()}.com/s?k=${encodeURIComponent(product.name)}`
+      : "#" // For local stores, we don't have direct links
+    
+    return { 
+      price: lowestPrice, 
+      platform: isOnlineStore ? lowestStore.name : `${lowestStore.name} (${lowestStore.location || 'Local'})`,
+      link 
     }
-
-    return { price: lowestPrice, platform: lowestPlatform, link: lowestPlatformLink }
   }
 
   // Format date
@@ -194,7 +185,7 @@ export function ProductDetailsEnhanced({ productId }: ProductDetailsEnhancedProp
               <div className="relative h-[400px] w-full">
                 <Carousel className="w-full">
                   <CarouselContent>
-                    {product.images.map((image, index) => (
+                    {product.images ? product.images.map((image, index) => (
                       <CarouselItem key={index}>
                         <div className="flex justify-center items-center p-2">
                           <ProductImage
@@ -207,7 +198,20 @@ export function ProductDetailsEnhanced({ productId }: ProductDetailsEnhancedProp
                           />
                         </div>
                       </CarouselItem>
-                    ))}
+                    )) : (
+                      <CarouselItem>
+                        <div className="flex justify-center items-center p-2">
+                          <ProductImage
+                            src="/placeholder.svg"
+                            alt={product.name}
+                            width={400}
+                            height={400}
+                            className="object-contain max-h-[400px]"
+                            fallbackSrc={`/placeholder.svg?height=400&width=400&text=${encodeURIComponent(product.name)}`}
+                          />
+                        </div>
+                      </CarouselItem>
+                    )}
                   </CarouselContent>
                   <CarouselPrevious className="left-2" />
                   <CarouselNext className="right-2" />
@@ -242,12 +246,16 @@ export function ProductDetailsEnhanced({ productId }: ProductDetailsEnhancedProp
           </div>
 
           <div className="flex items-center gap-2">
-            <Badge variant="outline" className="text-sm">
-              {product.reviews.rating} ★ ({product.reviews.count} reviews)
-            </Badge>
-            <Badge variant="outline" className="text-sm">
-              {product.brand}
-            </Badge>
+            {product.reviews && (
+              <Badge variant="outline" className="text-sm">
+                {product.reviews.rating} ★ ({product.reviews.count} reviews)
+              </Badge>
+            )}
+            {product.brand && (
+              <Badge variant="outline" className="text-sm">
+                {product.brand}
+              </Badge>
+            )}
             <Badge variant="outline" className="text-sm">
               {product.category}
             </Badge>
@@ -300,7 +308,7 @@ export function ProductDetailsEnhanced({ productId }: ProductDetailsEnhancedProp
           <Card>
             <CardContent className="p-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {Object.entries(product.specifications).map(([key, value]) => (
+                {product.specifications && Object.entries(product.specifications).map(([key, value]) => (
                   <div key={key} className="flex flex-col space-y-1">
                     <span className="text-sm font-medium text-muted-foreground">{key}</span>
                     <span className="font-medium">{value}</span>
@@ -315,78 +323,41 @@ export function ProductDetailsEnhanced({ productId }: ProductDetailsEnhancedProp
           <Card>
             <CardContent className="p-6">
               <div className="space-y-6">
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Online Prices</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {product.prices.amazon && (
-                      <div className="flex justify-between items-center p-4 border rounded-lg">
-                        <div>
-                          <h4 className="font-medium">Amazon</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Last updated: {formatDate(product.prices.amazon.lastUpdated)}
-                          </p>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-lg font-bold">{formatPrice(product.prices.amazon.price)}</p>
-                          <Button size="sm" variant="outline" asChild className="mt-2">
-                            <a href={product.prices.amazon.link} target="_blank" rel="noopener noreferrer">
-                              <ExternalLink className="h-3 w-3 mr-1" />
-                              Visit
-                            </a>
-                          </Button>
-                        </div>
-                      </div>
-                    )}
-
-                    {product.prices.flipkart && (
-                      <div className="flex justify-between items-center p-4 border rounded-lg">
-                        <div>
-                          <h4 className="font-medium">Flipkart</h4>
-                          <p className="text-sm text-muted-foreground">
-                            Last updated: {formatDate(product.prices.flipkart.lastUpdated)}
-                          </p>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-lg font-bold">{formatPrice(product.prices.flipkart.price)}</p>
-                          <Button size="sm" variant="outline" asChild className="mt-2">
-                            <a href={product.prices.flipkart.link} target="_blank" rel="noopener noreferrer">
-                              <ExternalLink className="h-3 w-3 mr-1" />
-                              Visit
-                            </a>
-                          </Button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {product.prices.localStores && product.prices.localStores.length > 0 && (
+                {product.stores && product.stores.length > 0 && (
                   <div className="space-y-4">
-                    <h3 className="text-lg font-medium">Local Store Prices</h3>
+                    <h3 className="text-lg font-medium">All Store Prices</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {product.prices.localStores.map((store, index) => (
-                        <div key={index} className="flex justify-between items-center p-4 border rounded-lg">
-                          <div>
-                            <h4 className="font-medium">{store.name}</h4>
-                            <p className="text-sm">{store.branch}</p>
-                            <p className="text-sm text-muted-foreground">
-                              Last updated: {formatDate(store.lastUpdated)}
-                            </p>
-                          </div>
-                          <div className="text-right">
-                            <p className="text-lg font-bold">{formatPrice(store.price)}</p>
-                            <p className="text-sm text-muted-foreground">
-                              {store.inStock ? (
-                                <span className="text-green-600 flex items-center justify-end gap-1">
-                                  <Check className="h-3 w-3" /> In Stock
-                                </span>
-                              ) : (
-                                <span className="text-red-500">Out of Stock</span>
+                      {product.stores.map((store, index) => {
+                        const isOnlineStore = store.type.toLowerCase() === 'online';
+                        const storeLink = isOnlineStore 
+                          ? `https://www.${store.name.toLowerCase()}.com/s?k=${encodeURIComponent(product.name)}`
+                          : "#";
+                          
+                        return (
+                          <div key={index} className="flex justify-between items-center p-4 border rounded-lg">
+                            <div>
+                              <h4 className="font-medium">{store.name}</h4>
+                              {store.location && <p className="text-sm">{store.location}</p>}
+                              {store.lastUpdated && (
+                                <p className="text-sm text-muted-foreground">
+                                  Last updated: {formatDate(store.lastUpdated)}
+                                </p>
                               )}
-                            </p>
+                            </div>
+                            <div className="text-right">
+                              <p className="text-lg font-bold">{formatPrice(store.price)}</p>
+                              {isOnlineStore && (
+                                <Button size="sm" variant="outline" asChild className="mt-2">
+                                  <a href={storeLink} target="_blank" rel="noopener noreferrer">
+                                    <ExternalLink className="h-3 w-3 mr-1" />
+                                    Visit
+                                  </a>
+                                </Button>
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      ))}
+                        );
+                      })}
                     </div>
                   </div>
                 )}
@@ -399,56 +370,18 @@ export function ProductDetailsEnhanced({ productId }: ProductDetailsEnhancedProp
           <Card>
             <CardContent className="p-6">
               <div className="space-y-6">
-                <div className="space-y-4">
-                  <h3 className="text-lg font-medium">Online Availability</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {product.prices.amazon && (
-                      <div className="flex justify-between items-center p-4 border rounded-lg">
-                        <div>
-                          <h4 className="font-medium">Amazon</h4>
-                          <p className="text-sm text-muted-foreground">Shipping: Free with Prime</p>
-                        </div>
-                        <div className="text-right">
-                          {product.prices.amazon.inStock ? (
-                            <span className="text-green-600 flex items-center justify-end gap-1">
-                              <Check className="h-4 w-4" /> In Stock
-                            </span>
-                          ) : (
-                            <span className="text-red-500">Out of Stock</span>
-                          )}
-                        </div>
-                      </div>
-                    )}
-
-                    {product.prices.flipkart && (
-                      <div className="flex justify-between items-center p-4 border rounded-lg">
-                        <div>
-                          <h4 className="font-medium">Flipkart</h4>
-                          <p className="text-sm text-muted-foreground">Shipping: Free with Flipkart Assured</p>
-                        </div>
-                        <div className="text-right">
-                          {product.prices.flipkart.inStock ? (
-                            <span className="text-green-600 flex items-center justify-end gap-1">
-                              <Check className="h-4 w-4" /> In Stock
-                            </span>
-                          ) : (
-                            <span className="text-red-500">Out of Stock</span>
-                          )}
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {product.prices.localStores && product.prices.localStores.length > 0 && (
+                {product.stores && product.stores.length > 0 && (
                   <div className="space-y-4">
-                    <h3 className="text-lg font-medium">Local Store Availability</h3>
+                    <h3 className="text-lg font-medium">Store Availability</h3>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {product.prices.localStores.map((store, index) => (
+                      {product.stores.map((store, index) => (
                         <div key={index} className="flex justify-between items-center p-4 border rounded-lg">
                           <div>
                             <h4 className="font-medium">{store.name}</h4>
-                            <p className="text-sm">{store.branch}</p>
+                            {store.location && <p className="text-sm">{store.location}</p>}
+                            {store.type.toLowerCase() === 'online' && (
+                              <p className="text-sm text-muted-foreground">Shipping: Free with {store.name}</p>
+                            )}
                           </div>
                           <div className="text-right">
                             {store.inStock ? (

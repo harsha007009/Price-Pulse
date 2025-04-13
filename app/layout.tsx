@@ -1,10 +1,11 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Mona_Sans as FontSans } from "next/font/google"
-import "./globals.css"
 import { cn } from "@/lib/utils"
 import { ThemeProvider } from "@/components/theme-provider"
-import { Header } from "@/components/header"
+import { MainLayout } from "@/components/main-layout"
+
+import "./globals.css"
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -14,7 +15,7 @@ const fontSans = FontSans({
 export const metadata: Metadata = {
   title: "Price Pulse",
   description: "Track and compare prices across multiple platforms",
-    generator: 'v0.dev'
+  generator: 'v0.dev'
 }
 
 export default function RootLayout({
@@ -24,18 +25,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          <div className="relative flex min-h-screen flex-col">
-            <Header />
-            <div className="flex-1">{children}</div>
-          </div>
+      <body 
+        className={cn("min-h-screen bg-background font-sans antialiased", fontSans.variable)}
+        suppressHydrationWarning
+      >
+        <ThemeProvider defaultTheme="system" storageKey="price-pulse-theme">
+          <MainLayout>{children}</MainLayout>
         </ThemeProvider>
       </body>
     </html>
   )
 }
-
-
-
-import './globals.css'

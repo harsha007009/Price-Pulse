@@ -2,9 +2,10 @@ import mongoose, { Schema, Document } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 export interface IUser extends Document {
+  userId: string;
+  username: string;
   email: string;
   password: string;
-  name: string;
   createdAt: Date;
   updatedAt: Date;
   comparePassword(candidatePassword: string): Promise<boolean>;
@@ -12,6 +13,17 @@ export interface IUser extends Document {
 
 const UserSchema = new Schema<IUser>(
   {
+    userId: {
+      type: String,
+      unique: true,
+      default: () => new mongoose.Types.ObjectId().toString()
+    },
+    username: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true
+    },
     email: { 
       type: String, 
       required: true, 
@@ -23,11 +35,6 @@ const UserSchema = new Schema<IUser>(
       type: String, 
       required: true,
       minlength: 6
-    },
-    name: { 
-      type: String, 
-      required: true,
-      trim: true
     }
   },
   { timestamps: true }

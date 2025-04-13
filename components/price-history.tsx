@@ -1,40 +1,97 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { LineChart } from "lucide-react"
+import { LineChart, Loader2 } from "lucide-react"
 
 interface PriceHistoryProps {
   id: string
 }
 
+interface PriceRecord {
+  source: string;
+  storeName: string;
+  price: number;
+  timestamp: string;
+}
+
 export function PriceHistory({ id }: PriceHistoryProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const [timePeriod, setTimePeriod] = useState<string>("6m")
+  const [loading, setLoading] = useState<boolean>(true)
+  const [priceData, setPriceData] = useState<PriceRecord[]>([])
+  const [error, setError] = useState<string | null>(null)
 
+  // Fetch price history data from API
   useEffect(() => {
-    if (!canvasRef.current) return
+    const fetchPriceHistory = async () => {
+      setLoading(true)
+      setError(null)
+      
+      try {
+        const response = await fetch(`/api/products/${id}/price-history?period=${timePeriod}`);
+        
+        if (!response.ok) {
+          throw new Error(`Failed to fetch price history: ${response.statusText}`);
+        }
+        
+        const data = await response.json();
+        setPriceData(data);
+      } catch (err) {
+        console.error("Error fetching price history:", err);
+        setError("Failed to load price history data");
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchPriceHistory();
+  }, [id, timePeriod]);
+
+  // Render the chart when data is loaded or canvas is ready
+  useEffect(() => {
+    if (!canvasRef.current || loading || error || priceData.length === 0) return;
 
     const ctx = canvasRef.current.getContext("2d")
-    if (!ctx) return
+    if (!ctx) return;
 
-    // Mock price history data for iPhone in INR
-    const amazonPrices = [139900, 139900, 134900, 134900, 131900, 131900, 131900, 131900, 131900, 131900, 131900]
-    const flipkartPrices = [139900, 137900, 137900, 132900, 132900, 129900, 129900, 129900, 129900, 129900, 129900]
+    // Group price data by store
+    const storeData: Record<string, {prices: number[], dates: string[]}> = {};
+    
+    // Sort by timestamp to ensure chronological order
+    const sortedData = [...priceData].sort((a, b) => 
+      new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime()
+    );
+    
+    // Group by store
+    sortedData.forEach(record => {
+      const storeName = record.storeName;
+      if (!storeData[storeName]) {
+        storeData[storeName] = { prices: [], dates: [] };
+      }
+      
+      storeData[storeName].prices.push(record.price);
+      storeData[storeName].dates.push(record.timestamp);
+    });
+    
+    // Get unique dates for x-axis labels
+    const allDates = sortedData.map(record => record.timestamp);
+    const uniqueDates = [...new Set(allDates)].sort((a, b) => 
+      new Date(a).getTime() - new Date(b).getTime()
+    );
+    
+    // Format dates for display
+    const labels = uniqueDates.map(dateStr => {
+      const date = new Date(dateStr);
+      return date.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' });
+    });
 
-    const labels = [
-      "Jan 1",
-      "Jan 15",
-      "Feb 1",
-      "Feb 15",
-      "Mar 1",
-      "Mar 15",
-      "Apr 1",
-      "Apr 15",
-      "May 1",
-      "May 15",
-      "Jun 1",
-    ]
+    // Extract all prices for min/max calculation
+    const allPrices = sortedData.map(record => record.price);
+    const minPrice = Math.min(...allPrices) * 0.95;
+    const maxPrice = Math.max(...allPrices) * 1.05;
+    const priceRange = maxPrice - minPrice;
 
     const canvas = canvasRef.current
     const dpr = window.devicePixelRatio || 1
@@ -50,12 +107,6 @@ export function PriceHistory({ id }: PriceHistoryProps) {
     const padding = 40
     const chartWidth = rect.width - padding * 2
     const chartHeight = rect.height - padding * 2
-
-    // Find min and max prices
-    const allPrices = [...amazonPrices, ...flipkartPrices]
-    const minPrice = Math.min(...allPrices) * 0.95
-    const maxPrice = Math.max(...allPrices) * 1.05
-    const priceRange = maxPrice - minPrice
 
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -99,59 +150,68 @@ export function PriceHistory({ id }: PriceHistoryProps) {
       ctx.fillText(labels[i], x, rect.height - padding + 10)
     }
 
-    // Draw Amazon price line
-    ctx.beginPath()
-    ctx.strokeStyle = "#ef4444"
-    ctx.lineWidth = 2
+    // Define store colors
+    const storeColors: Record<string, string> = {
+      'Amazon': '#ef4444',  // Red
+      'Flipkart': '#3b82f6', // Blue
+      'Reliance Digital': '#16a34a', // Green
+      'Croma': '#f59e0b',  // Orange
+      'Poorvika Mobiles': '#8b5cf6', // Purple
+      'Bajaj Electronics': '#ec4899', // Pink
+      'iStore': '#06b6d4',  // Cyan
+      'Samsung Smart Plaza': '#6366f1', // Indigo
+      'LG Best Shop': '#d946ef' // Fuchsia
+    };
 
-    for (let i = 0; i < amazonPrices.length; i++) {
-      const x = padding + (chartWidth / (amazonPrices.length - 1)) * i
-      const y = padding + chartHeight - ((amazonPrices[i] - minPrice) / priceRange) * chartHeight
-
-      if (i === 0) {
-        ctx.moveTo(x, y)
-      } else {
-        ctx.lineTo(x, y)
+    // Draw price lines for each store
+    const legendItems: {name: string, color: string}[] = [];
+    
+    Object.entries(storeData).forEach(([storeName, data], index) => {
+      const color = storeColors[storeName] || `hsl(${index * 40}, 70%, 50%)`;
+      legendItems.push({ name: storeName, color });
+      
+      ctx.beginPath();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      
+      // Find points where this store has data
+      const points: {x: number, y: number}[] = [];
+      
+      // Map this store's dates to the overall labels array
+      data.dates.forEach((dateStr, i) => {
+        const date = new Date(dateStr);
+        const labelIndex = uniqueDates.findIndex(d => new Date(d).getTime() === date.getTime());
+        
+        if (labelIndex !== -1) {
+          const x = padding + (chartWidth / (uniqueDates.length - 1)) * labelIndex;
+          const y = padding + chartHeight - ((data.prices[i] - minPrice) / priceRange) * chartHeight;
+          points.push({ x, y });
+        }
+      });
+      
+      // Draw the line connecting the points
+      if (points.length > 0) {
+        ctx.moveTo(points[0].x, points[0].y);
+        for (let i = 1; i < points.length; i++) {
+          ctx.lineTo(points[i].x, points[i].y);
+        }
+        ctx.stroke();
       }
-    }
-
-    ctx.stroke()
-
-    // Draw Flipkart price line
-    ctx.beginPath()
-    ctx.strokeStyle = "#3b82f6"
-    ctx.lineWidth = 2
-
-    for (let i = 0; i < flipkartPrices.length; i++) {
-      const x = padding + (chartWidth / (flipkartPrices.length - 1)) * i
-      const y = padding + chartHeight - ((flipkartPrices[i] - minPrice) / priceRange) * chartHeight
-
-      if (i === 0) {
-        ctx.moveTo(x, y)
-      } else {
-        ctx.lineTo(x, y)
-      }
-    }
-
-    ctx.stroke()
+    });
 
     // Draw legend
-    const legendX = rect.width - padding - 120
-    const legendY = padding + 20
-
-    ctx.fillStyle = "#ef4444"
-    ctx.fillRect(legendX, legendY, 20, 2)
-    ctx.fillStyle =
-      getComputedStyle(document.documentElement).getPropertyValue("--muted-foreground").trim() || "#64748b"
-    ctx.textAlign = "left"
-    ctx.fillText("Amazon", legendX + 30, legendY)
-
-    ctx.fillStyle = "#3b82f6"
-    ctx.fillRect(legendX, legendY + 20, 20, 2)
-    ctx.fillStyle =
-      getComputedStyle(document.documentElement).getPropertyValue("--muted-foreground").trim() || "#64748b"
-    ctx.fillText("Flipkart", legendX + 30, legendY + 20)
-  }, [id])
+    const legendX = rect.width - padding - 120;
+    let legendY = padding + 20;
+    
+    legendItems.forEach(item => {
+      ctx.fillStyle = item.color;
+      ctx.fillRect(legendX, legendY, 20, 2);
+      ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue("--muted-foreground").trim() || "#64748b";
+      ctx.textAlign = "left";
+      ctx.fillText(item.name, legendX + 30, legendY);
+      legendY += 20;
+    });
+  }, [loading, priceData, error]);
 
   return (
     <Card className="border-none shadow-md">
@@ -163,7 +223,7 @@ export function PriceHistory({ id }: PriceHistoryProps) {
           </CardTitle>
           <CardDescription>Track how the price has changed over time</CardDescription>
         </div>
-        <Select defaultValue="6m">
+        <Select value={timePeriod} onValueChange={setTimePeriod}>
           <SelectTrigger className="w-[120px]">
             <SelectValue placeholder="Time period" />
           </SelectTrigger>
@@ -178,7 +238,21 @@ export function PriceHistory({ id }: PriceHistoryProps) {
       </CardHeader>
       <CardContent className="p-4">
         <div className="h-80 w-full">
-          <canvas ref={canvasRef} className="w-full h-full"></canvas>
+          {loading ? (
+            <div className="flex items-center justify-center h-full">
+              <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+            </div>
+          ) : error ? (
+            <div className="flex items-center justify-center h-full text-muted-foreground">
+              {error}
+            </div>
+          ) : priceData.length === 0 ? (
+            <div className="flex items-center justify-center h-full text-muted-foreground">
+              No price history data available
+            </div>
+          ) : (
+            <canvas ref={canvasRef} className="w-full h-full"></canvas>
+          )}
         </div>
       </CardContent>
     </Card>

@@ -2,15 +2,46 @@
 
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Bell, Home, Map, Search, Settings, User } from "lucide-react"
+import { useState, useEffect } from "react"
+import { Bell, Home, Map, Search, Settings, User, LogOut } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { Button } from "@/components/ui/button"
 import { MobileNav } from "@/components/mobile-nav"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from "@/components/ui/dropdown-menu"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 
 export function Header() {
   const pathname = usePathname()
+  const [user, setUser] = useState<{ name?: string; email?: string } | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Fetch user information
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        const response = await fetch('/api/user/profile', { 
+          method: 'GET',
+          // Include credentials to send cookies
+          credentials: 'include'
+        })
+        
+        if (response.ok) {
+          const userData = await response.json()
+          setUser(userData)
+        } else {
+          setUser(null)
+        }
+      } catch (error) {
+        console.error('Error checking authentication:', error)
+        setUser(null)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    checkAuth()
+  }, [])
 
   const routes = [
     {
@@ -32,6 +63,25 @@ export function Header() {
       active: pathname.startsWith("/nearby"),
     },
   ]
+
+  // Logout handler
+  const handleLogout = async () => {
+    try {
+      const response = await fetch('/api/auth/signout', {
+        method: 'POST',
+        credentials: 'include'
+      })
+      
+      if (response.ok) {
+        // Clear user state
+        setUser(null)
+        // Reload the page to reset all states
+        window.location.href = '/'
+      }
+    } catch (error) {
+      console.error('Error signing out:', error)
+    }
+  }
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -73,21 +123,55 @@ export function Header() {
           <ThemeToggle />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <User className="h-4 w-4" />
+              <Button variant="ghost" size="icon" className="rounded-full">
+                {user ? (
+                  <Avatar className="h-8 w-8">
+                    <AvatarFallback className="bg-primary/10 text-primary">
+                      {user.name?.charAt(0).toUpperCase() || user.email?.charAt(0).toUpperCase() || 'U'}
+                    </AvatarFallback>
+                  </Avatar>
+                ) : (
+                  <Avatar className="h-8 w-8">
+                    <AvatarFallback className="bg-muted">
+                      <User className="h-4 w-4" />
+                    </AvatarFallback>
+                  </Avatar>
+                )}
                 <span className="sr-only">User menu</span>
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem asChild>
-                <Link href="/auth/login">Sign In</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/auth/signup">Sign Up</Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Link href="/settings">Settings</Link>
-              </DropdownMenuItem>
+              {user ? (
+                <>
+                  <div className="px-2 py-1.5 text-sm font-medium">
+                    {user.name || user.email}
+                  </div>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/profile">Profile</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/settings">Settings</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout}>
+                    <LogOut className="mr-2 h-4 w-4" /> Sign out
+                  </DropdownMenuItem>
+                </>
+              ) : (
+                <>
+                  <DropdownMenuItem asChild>
+                    <Link href="/auth/signin">Sign In</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/auth/signup">Sign Up</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem asChild>
+                    <Link href="/settings">Settings</Link>
+                  </DropdownMenuItem>
+                </>
+              )}
             </DropdownMenuContent>
           </DropdownMenu>
         </div>

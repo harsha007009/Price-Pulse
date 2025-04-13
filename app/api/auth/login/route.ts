@@ -2,15 +2,12 @@ import { NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongoose';
 import { User } from '@/models/User';
 import { z } from 'zod';
-import jwt from 'jsonwebtoken';
 
 // Validation schema
 const loginSchema = z.object({
   email: z.string().email('Invalid email format'),
   password: z.string().min(1, 'Password is required')
 });
-
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key';
 
 export async function POST(req: Request) {
   try {
@@ -47,27 +44,28 @@ export async function POST(req: Request) {
       );
     }
 
-    // Generate JWT token
-    const token = jwt.sign(
-      { userId: user._id, email: user.email },
-      JWT_SECRET,
-      { expiresIn: '7d' }
-    );
-
-    // Set HTTP-only cookie with the token
+    // Set HTTP-only cookies with user information
     const response = NextResponse.json(
       { 
         message: 'Login successful',
         user: {
           id: user._id,
           email: user.email,
-          name: user.name
+          name: user.name || user.username
         }
       },
       { status: 200 }
     );
 
-    response.cookies.set('token', token, {
+    // Set cookies with user information
+    response.cookies.set('userId', user._id.toString(), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 7 * 24 * 60 * 60 // 7 days
+    });
+    
+    response.cookies.set('userEmail', user.email, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',

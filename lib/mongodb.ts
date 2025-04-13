@@ -1,10 +1,16 @@
 import { MongoClient, Db } from 'mongodb';
 
-if (!process.env.MONGODB_URI) {
-  throw new Error('Please add your MongoDB URI to .env.local');
+// Use a direct connection string as a fallback if environment variable isn't available
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb+srv://harshavardhan20041973:harshavardhan20041973@cluster0.xwwwfk8.mongodb.net/price_pulse?retryWrites=true&w=majority&appName=Cluster0";
+
+// Make sure we have a MongoDB URI before proceeding
+if (!MONGODB_URI) {
+  console.error('MongoDB URI is missing in both environment variables and fallback');
+  throw new Error('MongoDB connection configuration is missing');
 }
 
-const uri = process.env.MONGODB_URI;
+console.log('MongoDB URI configured:', !!MONGODB_URI); // Log if URI exists without exposing it
+
 const options = {};
 
 let client: MongoClient;
@@ -18,14 +24,20 @@ if (process.env.NODE_ENV === 'development') {
   };
 
   if (!globalWithMongo._mongoClientPromise) {
-    client = new MongoClient(uri, options);
-    globalWithMongo._mongoClientPromise = client.connect();
+    client = new MongoClient(MONGODB_URI, options);
+    globalWithMongo._mongoClientPromise = client.connect().catch(err => {
+      console.error('Failed to connect to MongoDB:', err);
+      throw err;
+    });
   }
   clientPromise = globalWithMongo._mongoClientPromise;
 } else {
   // In production mode, it's best to not use a global variable.
-  client = new MongoClient(uri, options);
-  clientPromise = client.connect();
+  client = new MongoClient(MONGODB_URI, options);
+  clientPromise = client.connect().catch(err => {
+    console.error('Failed to connect to MongoDB:', err);
+    throw err;
+  });
 }
 
 // Export a module-scoped MongoClient promise. By doing this in a
